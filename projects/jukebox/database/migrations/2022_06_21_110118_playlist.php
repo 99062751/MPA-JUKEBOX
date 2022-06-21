@@ -13,7 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('playlist', function (Blueprint $table) {
+            $table->increments('playlist_id', 11);
+            $table->string('playlist_name', 100);
+            $table->string('songs', 255);
+            $table->timestamp('playlist_duration', 6);
+        });
     }
 
     /**
@@ -23,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('playlist');
     }
 };
