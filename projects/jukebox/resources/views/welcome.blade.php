@@ -52,15 +52,37 @@
             <h1>{{ session('msg') }}</h1>
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <h1 style="color: white;">My playlists</h1>]
-                <div style="display: inline-flex;">                    
-
-                @foreach($playlist as $play)  
-                <div style="background-color: blue; width: 250px; text-align: center; padding: 15px;">
-                    <p>{{ $play["name"] }}</p>
-                    <p>{{ $play["songs"] }}</p>
-                    <p>{{ $play["duration"] }}</p>
-                </div>
-                @endforeach
+                <div style="display: inline-flex;">  
+                @if(isset($playlist))                  
+                    @foreach($playlist as $play)  
+                    <div style="background-color: blue; width: 250px; text-align: center; padding: 15px;">
+                        <p>{{ $play["name"] }}</p>
+                        <a href="{{ route('playlist.details', $play['name']) }}">View playlist</a>
+                    </div>
+                    @endforeach
+                @else  
+                    <h3>Playlist queue empty!</h3>
+                @endif
         </div>
     </body>
 </html>
+
+
+
+<!-- 
+
+[playlist]
+
+welcome.php -> [playlist]
+- name 
+[button] -> details
+
+   = = = == = == = == = = 
+
+details.php
+[playlist]
+- name 
+- song
+- duration
+
+ -->
