@@ -35,32 +35,32 @@
                     @endauth
                 </div>
             @endif
-            <h1>{{ session('msg') }}</h1>
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-                    <h1>Playlist</h1>
-                </div>
-
+            <div class="relative flex items-top justify-center min-h-screen">
+                <div class=" top-0 px-6 ">
+                    <a href="{{ route('genres.view_genres') }}" class="ml-1 underline" style="color: white;">
+                        View Genres
+                    </a>
                 
 
-                <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
-                    <div class="text-center text-sm text-gray-500 sm:text-left">
-                        <div class="flex items-center">
-                            <a href="{{ route('genres.view_genres') }}" class="ml-1 underline">
-                                View Genres
-                            </a>
-
-                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="ml-4 -mt-px w-5 h-5 text-gray-400">
-                                <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                            </svg>
-
-                            <a href="{{ route('playlist.create_playlist') }}" class="ml-1 underline">
-                                Create playlist
-                            </a>
-                        </div>
-                    </div>
+                    <a href="{{ route('playlist.create_playlist') }}" class="ml-1 underline" style="color: white;">
+                        Create playlist
+                    </a>
                 </div>
+               
             </div>
+
+            <h1>{{ session('msg') }}</h1>
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+                <h1 style="color: white;">My playlists</h1>]
+                <div style="display: inline-flex;">                    
+
+                @foreach($playlist as $play)  
+                <div style="background-color: blue; width: 250px; text-align: center; padding: 15px;">
+                    <p>{{ $play["name"] }}</p>
+                    <p>{{ $play["songs"] }}</p>
+                    <p>{{ $play["duration"] }}</p>
+                </div>
+                @endforeach
         </div>
     </body>
 </html>

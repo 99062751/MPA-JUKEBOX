@@ -17,7 +17,10 @@ return new class extends Migration
             $table->increments('playlist_id', 11);
             $table->string('playlist_name', 100);
             $table->string('songs', 255);
-            $table->timestamp('playlist_duration', 6);
+            $table->time('playlist_duration', 4);
+            $table->timestamp('created_at', 6);
+            $table->timestamp('updated_at', 6);
+            
         });
     }
 

@@ -8,7 +8,7 @@
         <input type="text" name="songs" id="songs"><br />
 
         <label for="name">Duration</label>
-        <input type="number" name="play_duration" id="play_duration"><br />
+        <input type="time" name="play_duration" id="play_duration"><br />
 
         <input type="submit" value="Create Playlist"></input>
     </form>

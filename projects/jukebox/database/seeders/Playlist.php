@@ -15,13 +15,16 @@ class Playlist extends Seeder
      *
      * @return void
      */
+
     public function run()
     {
         //
         DB::table("playlist")->insert([
             "playlist_name" => Str::random(10),
             "songs" => Str::random(10),
-            "playlist_duration" => Carbon::now(),
+            "playlist_duration" => Carbon::now()->format('h:i'),
+            "created_at" => Carbon::now(),
+            "updated_at" => Carbon::now(),
         ]);
     }
 }

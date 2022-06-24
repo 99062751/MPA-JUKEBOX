@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\PlaylistController;
+use App\Models\Playlist;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,7 +17,8 @@ use App\Http\Controllers\PlaylistController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $playlists= Playlist::orderBy('playlist_id')->get();
+    return view("welcome", ["playlists" => $playlists]);
 });
 
 Route::get('/dashboard', function () {
@@ -30,3 +32,6 @@ Route::get('genres/index_genres', [GenreController::class, "view_genres"])->name
 Route::get('playlist/create_playlist', [GenreController::class, "create_playlist"])->name("playlist.create_playlist");
 Route::get('welcome', [PlaylistController::class, "store_playlist"])->name("playlist.store_playlist");
 Route::get('songs/{id}', [SongController::class, "songs_overview"])->name("songs.overview");
+Route::get('song/details/{id}', [SongController::class, "songs_details"])->name("songs.details");
+Route::get('/songs/add/{id}', [SongController::class, "songs_add"])->name("songs.add");
+Route::get('/playlist/overview/{id}', [PlaylistController::class, "playlist_overview"])->name("playlist.overview");
