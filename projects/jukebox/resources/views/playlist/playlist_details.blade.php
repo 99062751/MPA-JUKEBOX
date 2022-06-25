@@ -2,8 +2,9 @@
     <h1>Name playlist:</h1>
     <p>{{ $play["name"] }}</p>
     <h1>Songs playlist:</h1>
-    <p>{{ $play["songs"] }}</p>
+    @foreach($play["songs"] as $s)
+    <p>{{ $s }}</p>
+    @endforeach
     <h1>Duration playlist:</h1>
     <p>{{ $play["duration"] }}</p>
-
 @endforeach

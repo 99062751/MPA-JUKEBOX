@@ -30,7 +30,7 @@ require __DIR__.'/auth.php';
 
 
 Route::get('genres/index_genres', [GenreController::class, "view_genres"])->name("genres.view_genres");
-Route::get('playlist/create_playlist', [GenreController::class, "create_playlist"])->name("playlist.create_playlist");
+Route::get('playlist/create_playlist', [SongController::class, "get_songs"])->name("playlist.create_playlist");
 Route::get('welcome', [PlaylistController::class, "store_playlist"])->name("playlist.store_playlist");
 Route::get('songs/{id}', [SongController::class, "songs_overview"])->name("songs.overview");
 Route::get('song/details/{id}', [SongController::class, "songs_details"])->name("songs.details");
@@ -42,3 +42,5 @@ Route::get('/playlist/details/{name}', function (Request $request, $name) {
     $playlist= $request->session()->get($name);
     return view("playlist.playlist_details", ["playlist" => $playlist]);
 })->name("playlist.details");
+
+

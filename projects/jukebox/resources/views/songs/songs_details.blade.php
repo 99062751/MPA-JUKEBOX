@@ -11,6 +11,6 @@
             <h4>Duration</h4>
             <p>{{ date("H:s", strtotime($s["song_duration"])) }}</p>
 
-            <a href="{{ route('songs.add', $s['song_id']) }}">Add</a>
+            <a href="{{ route('songs.add', $s['song_id']) }}">Add to playlist</a>
     </div>
 @endforeach

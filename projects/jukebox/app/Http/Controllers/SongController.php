@@ -16,6 +16,11 @@ class SongController extends Controller
         return view("songs.songs_details", ["song" => $song]);
     }
 
+    public function get_songs(){
+        $songs= Song::orderBy('song_id')->get();
+        return view("playlist.create_playlist", ["songs" => $songs]);
+    }
+
     public function songs_add($id){
         return "OK";
     }

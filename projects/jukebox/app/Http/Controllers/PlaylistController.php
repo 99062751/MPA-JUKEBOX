@@ -16,7 +16,6 @@ class PlaylistController extends Controller
         $duration= request("play_duration");
         $request->session()->put($name, [["id" => $id, "name" => $name, "songs" => $songs, "duration" =>$duration]]);
         return view("welcome", ["playlist" =>  $request->session()->get($name)]);
-        //return Session::get("playlist");
     }
 
     public function save_playlist(){
