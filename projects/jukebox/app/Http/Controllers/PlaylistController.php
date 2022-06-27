@@ -5,6 +5,7 @@ use App\Models\Playlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
+use App\Models\Song;
 
 class PlaylistController extends Controller
 {
@@ -34,8 +35,10 @@ class PlaylistController extends Controller
         return view("playlist.playlist_overview", ["playlist" => $playlist]);
     }
 
-    public function playlist_details($id){
-        $ok= $request->session()->get($name);
-        return view("playlist.playlist_overview", ["playlist" => $ok]);
-    }
+    public function playlist_details(Request $request, $name) {
+        $playlist= $request->session()->get($name);
+        $arr= [];
+        $songs = Song::whereIn('song_id', $playlist[0]["songs"])->get();
+        return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs]);
+    }   
 }
