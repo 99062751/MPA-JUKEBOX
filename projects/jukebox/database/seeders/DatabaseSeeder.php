@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use \App\Models\Song;
+use \App\Models\Genre;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,7 +15,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $this->call(UserSeeder::class);
+        // gebruikt factories song en genre
+        Genre::factory(6)->create();
+        Song::factory(10)->create();
+
+        $this->call(PlaylistsSeeder::class);
+
+        
+
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

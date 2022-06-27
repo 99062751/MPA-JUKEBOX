@@ -6,9 +6,9 @@
 <h2>Songs:</h2>
     @foreach($songs as $song)
     <div style="background-color: grey; width: 300px; color: white; padding: 12px; margin: 13px;">
-        <h3>Naam: {{ $song->song_name }}</h3>
+        <h3>Naam: {{ $song->name }}</h3>
         <h3>Artiest: {{ $song->artist }}</h5>
-        <h3>Duur (min/sec): {{ date("H:s", strtotime($song->song_duration)) }}</h3>
+        <h3>Duur (min/sec): {{ date("H:s", strtotime($song->duration)) }}</h3>
     </div>
     @endforeach
 <h2>

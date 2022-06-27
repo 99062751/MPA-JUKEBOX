@@ -14,10 +14,12 @@ class Playlist extends Model
      *
      * @var string
      */
-    protected $table = 'playlist';
 
     public function songs(){
-        return $this->hasMany(Song::class);
+        return $this->belongsToMany(Song::class);
     }
 
+    public function users(){
+        return $this->belongsTo(User::class);
+    }
 }

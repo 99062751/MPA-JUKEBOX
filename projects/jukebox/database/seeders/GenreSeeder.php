@@ -17,9 +17,6 @@ class GenreSeeder extends Seeder
     public function run()
     {
         //
-        DB::table("genres")->insert([
-            "genre_name" => Str::random(10),
-            "genre_desc" => Str::random(10)
-        ]);
+        
     }
 }

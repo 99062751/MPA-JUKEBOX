@@ -6,16 +6,9 @@ use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
-    public function __contruct(){
-        $this->middleware("auth");
-    }
     //view genres
     public function view_genres(){
-        $genres= Genre::orderBy('genre_id')->get();
+        $genres= Genre::orderBy('id')->get();
         return view("genres.index_genres" , ["genres" => $genres]);
-    }
-
-    public function view_songs($id){
-        return $genres= Genres::findOrFail($id);
     }
 }

@@ -14,11 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('songs', function (Blueprint $table) {
-            $table->increments('song_id', 11);
-            $table->string('song_name', 100);
-            $table->string('artist', 270);
-            $table->string('song_type', 255);
-            $table->timestamp('song_duration', 6);
+            $table->id();
+            $table->string('name');
+            $table->string('artist');
+            $table->bigInteger('genre_id')->unsigned();
+            //$table->string('song_type', 255);
+            $table->timestamp('duration')->useCurrent();
+            $table->timestamps();
+
+            $table->foreign('genre_id')->references('id')->on('genres'); 
         });
     }
 

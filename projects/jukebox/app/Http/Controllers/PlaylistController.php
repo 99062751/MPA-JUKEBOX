@@ -14,22 +14,11 @@ class PlaylistController extends Controller
         $id= request("play_id");
         $name= request("play_name");
         $songs= request("songs");
-
+        $duration= "ok"; 
         //$songs = Song::whereIn('song_id', $songs)->get("song_duration");
-
-        //$time_songs= date("H:s", strtotime($songs));
-
-       // return date("H:s", strtotime($songs[0]));
-
-        // foreach ($songs["duration"] as $song) {
-        //     list($hour, $minute, $second) = explode(':', $song);
-        //     $all_seconds += $hour * 3600;
-        //     $all_seconds += $minute * 60; $all_seconds += $second;
     
-        // }
-    
-        // $request->session()->put($name, [["id" => $id, "name" => $name, "songs" => $songs, "duration" =>$duration]]);
-        // return view("welcome", ["playlist" =>  $request->session()->get($name)]);
+        $request->session()->put($name, [["id" => $id, "name" => $name, "songs" => $songs, "duration" =>$duration]]);
+        return view("welcome", ["playlist" =>  $request->session()->get($name)]);
     }
 
     public function save_playlist(){
@@ -43,6 +32,8 @@ class PlaylistController extends Controller
         return view("welcome", ["playlists" => $playlists]);
     }
 
+    //playlist = [1:[name: test], 2:[name: hond]]
+
     public function playlist_overview($id){
         $playlist= Playlist::where('playlist_id', '=', $id)->get();
         return view("playlist.playlist_overview", ["playlist" => $playlist]);
@@ -51,7 +42,7 @@ class PlaylistController extends Controller
     public function playlist_details(Request $request, $name) {
         $playlist= $request->session()->get($name);
         $arr= [];
-        $songs = Song::whereIn('song_id', $playlist[0]["songs"])->get();
+        $songs = Song::whereIn('id', $playlist[0]["songs"])->get();
         return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs]);
     }   
 }

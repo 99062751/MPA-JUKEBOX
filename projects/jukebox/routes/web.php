@@ -19,7 +19,7 @@ use App\Models\Song;
 */
 
 Route::get('/', function () {
-    $playlists= Playlist::orderBy('playlist_id')->get();
+    $playlists= Playlist::orderBy('id')->get();
     return view("welcome", ["playlists" => $playlists]);
 });
 
@@ -40,6 +40,7 @@ Route::get('playlist/create_playlist', [SongController::class, "get_songs"])->na
 Route::get('welcome', [PlaylistController::class, "store_playlist"])->name("playlist.store_playlist");
 Route::get('save_playlist', [PlaylistController::class, "save_playlist"])->name("playlist.save_playlist");
 
+//Route::get('songs/{id}', [SongController::class, "songs_overview"])->name("songs.overview");
 Route::get('songs/{id}', [SongController::class, "songs_overview"])->name("songs.overview");
 Route::get('song/details/{id}', [SongController::class, "songs_details"])->name("songs.details");
 Route::get('/songs/add/{id}', [SongController::class, "songs_add"])->name("songs.add");

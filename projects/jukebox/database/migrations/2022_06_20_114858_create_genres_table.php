@@ -14,9 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('genres', function (Blueprint $table) {
-            $table->increments('genre_id', 11);
-            $table->string('genre_name', 100);
-            $table->string('genre_desc', 255);
+            $table->id();
+            $table->string('name');
+            $table->mediumText('description');
+            $table->timestamps();
         });
     }
 

@@ -11,7 +11,7 @@
         <label for="name">Songs</label><br>
         <select name="songs[]" multiple size="4">
             @foreach($songs as $song)
-            <option value="{{ $song['song_id'] }}">{{ $song["song_name"] }}</option>
+            <option value="{{ $song->id }}">{{ $song->name }}</option>
             @endforeach
         </select>
     <br>
