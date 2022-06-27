@@ -11,4 +11,8 @@ class Genre extends Model
     protected $casts= [
         "genres" => 'array'
     ];
+
+    public function songs(){
+        return $this->hasMany(Song::class);
+    }
 }

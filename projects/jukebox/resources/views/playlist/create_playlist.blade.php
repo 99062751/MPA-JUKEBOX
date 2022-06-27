@@ -17,8 +17,8 @@
     <br>
     <br>
 
-        <label for="name">Duration</label>
-        <input type="time" name="play_duration" id="play_duration"><br />
+        <!-- <label for="name">Duration</label>
+        <input type="disabled" name="play_duration" id="play_duration"><br /> -->
         <input type="submit" value="Create Playlist"></input>
     </form>
 </div>
