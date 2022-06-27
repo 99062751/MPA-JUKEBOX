@@ -21,10 +21,12 @@ class PlaylistController extends Controller
     public function save_playlist(){
         $playlist= new Playlist(); 
         $playlist->playlist_name= request("play_name");
-        $playlist->songs= request("songs");
+        $playlist->songs= implode(" ", request("songs"));
         $playlist->playlist_duration= request("play_duration");
         $playlist->save();
-        return redirect("/")->with("msg", "Successfully saved playlist!");
+
+        $playlists= Playlist::orderBy('playlist_id')->get();
+        return view("welcome", ["playlists" => $playlists]);
     }
 
     public function playlist_overview($id){

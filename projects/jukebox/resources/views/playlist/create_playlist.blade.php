@@ -1,7 +1,10 @@
 <h1>PLATYLIST</h1>
 <div>   
+    @if (Auth::check())
+    <form action="{{ route('playlist.save_playlist') }}">
+    @else
     <form action="{{ route('playlist.store_playlist') }}">
-
+    @endif
         <label for="name">Naam playlist</label>
         <input type="text" name="play_name" id="play_name"><br /><br>
 

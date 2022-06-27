@@ -48,21 +48,33 @@
                 </div>
                
             </div>
-
             <h1>{{ session('msg') }}</h1>
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <h1 style="color: white;">My playlists</h1>]
-                <div style="display: inline-flex;">  
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" >
+                <h1 style="color: white;">My playlists</h1>
+                <div style="display: inline-block; width: 800px;">  
                 @if(isset($playlist))                  
                     @foreach($playlist as $play)  
                     <div style="background-color: blue; width: 250px; text-align: center; padding: 15px;">
                         <p>{{ $play["name"] }}</p>
                         <a href="{{ route('playlist.details', $play['name']) }}">View playlist</a>
+                        @if (Auth::check())
+                            <a href="{{ route('playlist.save_playlist') }}">Save playlist</a>
+                        @endif
                     </div>
                     @endforeach
-                @else  
+                @elseif(isset($playlists) && Auth::check())
+                    @foreach($playlists as $real_play)  
+                    <div style="background-color: blue; width: 250px; text-align: center; padding: 15px; border: 3px solid white; margin: 10px;">
+                        <p>{{ $real_play["playlist_name"] }}</p>
+                        <a href="{{ route('playlist.details', $real_play['playlist_name']) }}">View playlist</a>
+                    </div>
+                    @endforeach
+                @else
                     <h3>Playlist queue empty!</h3>
                 @endif
+
+                
+            </div>
         </div>
     </body>
 </html>
