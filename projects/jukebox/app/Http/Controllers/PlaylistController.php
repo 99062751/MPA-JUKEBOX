@@ -68,8 +68,13 @@ class PlaylistController extends Controller
     public function addsongsto_playlist(Request $request, $name){
         $to_add_songs= request("songstoadd");
         //dd($to_add_songs); 
-        $request->session()->push('songs', $to_add_songs);
+        foreach($to_add_songs as $song_id){
+            $request->session()->push($name .'.0.songs', $song_id);
+        }
         $playlist= $request->session()->get($name);
-        dd($playlist[0]['songs']);
+        $songs = Song::whereIn('id', $playlist[0]["songs"])->get();
+        $select_songs= Song::orderBy('id')->get();
+        $playlist[0]["duration"]= $this->getduration($songs);
+        return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }
 }
