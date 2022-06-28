@@ -8,7 +8,8 @@ class SongController extends Controller
 {
     //
     public function songs_overview($id){
-        $songs= Genre::find($id)->songs();
+        
+        $songs= Genre::find($id)->songs()->get();
         return view("songs.songs_overview", ["songs" => $songs]);
     }
 

@@ -5,11 +5,14 @@ use App\Models\Playlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Carbon;
+use Carbon\CarbonInterval;
 use App\Models\Song;
+
 
 class PlaylistController extends Controller
 {
-    //
+
     public function store_playlist(Request $request){
         $id= request("play_id");
         $name= request("play_name");
@@ -41,8 +44,27 @@ class PlaylistController extends Controller
 
     public function playlist_details(Request $request, $name) {
         $playlist= $request->session()->get($name);
-        $arr= [];
         $songs = Song::whereIn('id', $playlist[0]["songs"])->get();
+        //$playlist[0]["songs"] = array van song ids
+        //foreach($playlist[0]["songs"] as $song_id){
+        
+        $playlist[0]["duration"]= $this->getduration($songs);
+        //}
+
         return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs]);
     }   
+
+    public function getduration($songs){
+
+        $duration_arr= $songs->pluck('duration');
+        $time= 0; 
+        foreach($duration_arr as $value){
+            $value= Carbon::createFromFormat('H:i:s',  $value);
+            $time= $time + $value->secondsSinceMidnight();
+        }
+
+        //dd(gmdate("i:s", $time));
+        
+        return gmdate("i:s", $time);
+    }
 }

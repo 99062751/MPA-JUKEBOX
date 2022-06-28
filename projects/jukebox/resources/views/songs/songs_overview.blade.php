@@ -3,6 +3,6 @@
 <div>
     <h1>{{ $song->name }}</h1>
     <p>{{ $song->artist }}</p>
-    <a href="{{ route('songs.details', $song['song_id']) }}">DETAILS SONG</a>
+    <a href="{{ route('songs.details', $song->id) }}">DETAILS SONG</a>
 </div>
 @endforeach
