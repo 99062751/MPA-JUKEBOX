@@ -5,7 +5,7 @@
     <h1>Naam playlist: "{{$play["name"]}}"</h1>
     <h2>Songs:</h2>
     <div style="width: 1400px; display: inline-flex;">
-        @foreach($songs as $song)
+        @foreach($songs as $index => $song)
         <div style="background-color: grey; width: 300px; color: white; padding: 12px; margin: 13px;">
             <h3>Naam: {{ $song->name }}</h3>
             <h3>Artiest: {{ $song->artist }}</h5>
@@ -14,11 +14,15 @@
             @else
                 <h3>Duur (min/sec): {{ date("h:i:s", strtotime($song->duration)) }}</h3>
             @endif
+            <form action="{{ route('retrieveFromSession.playlist', $play['name']) }}">
+                <input type="hidden" name="song_id" value="{{$index}}">
+                <input type="submit" value="Delete Song">
+            </form>
         </div>
         @endforeach
     </div>
 
-    <form action="{{ route('playlist.addsongsto.playlist', $play['name']) }}">
+    <form action="{{ route('addToSession.playlist', $play['name']) }}">
         <label for="">Add more songs</label><br>
         <select name="songstoadd[]" id="" multiple size="2">
             @foreach ($select_songs as $select_song)

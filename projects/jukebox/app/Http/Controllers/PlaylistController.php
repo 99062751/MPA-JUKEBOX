@@ -14,13 +14,12 @@ class PlaylistController extends Controller
 {
 
     public function store_playlist(Request $request){
-        $id= request("play_id");
         $name= request("play_name");
         $songs= request("songs");
         $duration= "ok"; 
         //$songs = Song::whereIn('song_id', $songs)->get("song_duration");
     
-        $request->session()->put($name, [["id" => $id, "name" => $name, "songs" => $songs, "duration" =>$duration]]);
+        $request->session()->put($name, [["name" => $name, "songs" => $songs, "duration" =>$duration]]);
         return view("welcome", ["playlist" =>  $request->session()->get($name)]);
     }
 
@@ -65,9 +64,8 @@ class PlaylistController extends Controller
         return gmdate("i:s", $time);
     }
 
-    public function addsongsto_playlist(Request $request, $name){
+    public function addToSession(Request $request, $name){
         $to_add_songs= request("songstoadd");
-        //dd($to_add_songs); 
         foreach($to_add_songs as $song_id){
             $request->session()->push($name .'.0.songs', $song_id);
         }
@@ -77,4 +75,16 @@ class PlaylistController extends Controller
         $playlist[0]["duration"]= $this->getduration($songs);
         return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }
+    
+    public function retrieveFromSession(Request $request, $name){
+        $id= request("song_id");
+        $request->session()->pull($name .'.0.songs.'. $id);
+
+        $playlist= $request->session()->get($name);
+        $songs = Song::whereIn('id', $playlist[0]["songs"])->get();
+        $select_songs= Song::orderBy('id')->get();
+        $playlist[0]["duration"]= $this->getduration($songs);
+        return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+    }
+
 }
