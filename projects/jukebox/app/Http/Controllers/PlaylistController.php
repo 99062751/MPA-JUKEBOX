@@ -45,13 +45,10 @@ class PlaylistController extends Controller
     public function playlist_details(Request $request, $name) {
         $playlist= $request->session()->get($name);
         $songs = Song::whereIn('id', $playlist[0]["songs"])->get();
-        //$playlist[0]["songs"] = array van song ids
-        //foreach($playlist[0]["songs"] as $song_id){
-        
+        $select_songs= Song::orderBy('id')->get();
         $playlist[0]["duration"]= $this->getduration($songs);
-        //}
 
-        return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs]);
+        return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }   
 
     public function getduration($songs){
@@ -66,5 +63,13 @@ class PlaylistController extends Controller
         //dd(gmdate("i:s", $time));
         
         return gmdate("i:s", $time);
+    }
+
+    public function addsongsto_playlist(Request $request, $name){
+        $to_add_songs= request("songstoadd");
+        //dd($to_add_songs); 
+        $request->session()->push('songs', $to_add_songs);
+        $playlist= $request->session()->get($name);
+        dd($playlist[0]['songs']);
     }
 }
