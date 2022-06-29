@@ -20,7 +20,8 @@ class PlaylistsSeeder extends Seeder
             [
                 "name" => "Apenplaylist",
                 // user id word gekoppelt aan user met naam aapje
-                "user_id" => User::where("name", "aapje")->first()->id
+                "user_id" => User::where("name", "aapje")->first()->id,
+                "songs" => 1234567
             ]
         ];
 

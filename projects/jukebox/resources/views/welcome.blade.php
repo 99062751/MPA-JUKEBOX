@@ -56,7 +56,11 @@
                     @foreach($playlist as $play)  
                     <div style="background-color: blue; width: 250px; text-align: center; padding: 15px;">
                         <p>{{ $play["name"] }}</p>
-                        <a href="{{ route('playlist.details', $play['name']) }}">View playlist</a>
+                        <form action="{{ route('playlist.details', $play['name']) }}">
+                            <input type="hidden" value="session" name="type">
+                            <input type="submit" value="View playlist3">
+                        </form>
+                        
                         @if (Auth::check())
                             <a href="{{ route('playlist.save_playlist') }}">Save playlist</a>
                         @endif
@@ -66,14 +70,22 @@
                     @foreach($data_playlist as $dataplay)  
                     <div style="background-color: blue; width: 250px; text-align: center; padding: 15px;">
                         <p>{{ $dataplay["name"] }}</p>
-                        <a href="{{ route('playlist.details', $dataplay['name']) }}">View playlist</a>
+                        <form action="{{ route('playlist.details', $data_play['name']) }}">
+                            <input type="hidden" value="database" name="type">
+                            <input type="hidden" value="{{$dataplay['id']}}" name="id">
+                            <input type="submit" value="View playlist2">
+                        </form>
                     </div>
                     @endforeach
                 @elseif(isset($playlists) && Auth::check())
                     @foreach($playlists as $real_play)  
                     <div style="background-color: blue; width: 250px; text-align: center; padding: 15px; border: 3px solid white; margin: 10px;">
                         <p>{{ $real_play["name"] }}</p>
-                        <a href="{{ route('playlist.details', $real_play['name']) }}">View playlist</a>
+                        <form action="{{ route('playlist.details', $real_play['name']) }}">
+                            <input type="hidden" value="database" name="type">
+                            <input type="hidden" value="{{$real_play['id']}}" name="id">
+                            <input type="submit" value="View playlist">
+                        </form>
                     </div>
                     @endforeach
                 @else

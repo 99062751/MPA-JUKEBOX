@@ -26,9 +26,11 @@ class PlaylistController extends Controller
 
     public function save_playlist(){
         $playlist= new Playlist(); 
-        $playlist->name= request("name");
-        $playlist->songs= implode(" ", request("songs"));
-        $playlist->duration= request("duration");
+        $playlist->name= request("play_name");
+        //dd(implode(" ", request("songs")));
+        
+        $playlist->songs= implode(",", request("songs"));
+        //$playlist->duration= request("duration");
         $playlist->save();
 
         $playlists= Playlist::orderBy('id')->get();
@@ -48,12 +50,29 @@ class PlaylistController extends Controller
     }
 
     public function playlist_details(Request $request, $name) {
-        $playlist= $request->session()->get($name);
-        $songs = Song::whereIn('id', $playlist[0]["songs"])->get();
-        $select_songs= Song::orderBy('id')->get();
-        $playlist[0]["duration"]= $this->getduration($songs);
+        $type= request("type");
+        if($type == "session" && !isset($id)){
+            $playlist= $request->session()->get($name);
+            $songs = Song::whereIn('id', $playlist[0]["songs"])->get();
+            $select_songs= Song::orderBy('id')->get();
+            $playlist[0]["duration"]= $this->getduration($songs);
+    
+            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+        }else if($type == "database"){
+            $id= request("id");
+            $playlist= Playlist::find($id);
+            $returnme= explode(",", $playlist["songs"]);
+            $songs= [];
+            foreach($returnme as $index){
+                $songs[$index] = Song::find($index);
+            }
+            $select_songs= Song::orderBy('id')->get();
+            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+            dd($returnme);
+        }else{
+            return "oop werkt niet";
+        }
 
-        return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }   
 
     public function getduration($songs){
