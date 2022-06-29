@@ -30,7 +30,7 @@
     </form>
 
     <h2>
-        Duur (min/sec): ok
+        Duur (min/sec): {{$playlist->duration}}
     </h2>
     @else
     @foreach($playlist as $play)

@@ -67,8 +67,9 @@ class PlaylistController extends Controller
                 $songs[$index] = Song::find($index);
             }
             $select_songs= Song::orderBy('id')->get();
+            $playlist->duration= $this->getduration(collect($songs));
+            
             return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
-            dd($returnme);
         }else{
             return "oop werkt niet";
         }
@@ -76,7 +77,6 @@ class PlaylistController extends Controller
     }   
 
     public function getduration($songs){
-
         $duration_arr= $songs->pluck('duration');
         $time= 0; 
         foreach($duration_arr as $value){
