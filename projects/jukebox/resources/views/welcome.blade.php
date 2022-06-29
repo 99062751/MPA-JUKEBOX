@@ -23,14 +23,14 @@
     <body class="antialiased">
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
             @if (Route::has('login'))
-                <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+                <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block" style="color: white;">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
+                        <a href="{{ url('/dashboard') }}" class="text-sm underline">Dashboard</a>
                     @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+                        <a href="{{ route('login') }}" class="text-sm underline">Log in</a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                            <a href="{{ route('register') }}" class="ml-4 text-sm underline">Register</a>
                         @endif
                     @endauth
                 </div>
@@ -62,11 +62,18 @@
                         @endif
                     </div>
                     @endforeach
+                @elseif(isset($data_playlist))
+                    @foreach($data_playlist as $dataplay)  
+                    <div style="background-color: blue; width: 250px; text-align: center; padding: 15px;">
+                        <p>{{ $dataplay["name"] }}</p>
+                        <a href="{{ route('playlist.details', $dataplay['name']) }}">View playlist</a>
+                    </div>
+                    @endforeach
                 @elseif(isset($playlists) && Auth::check())
                     @foreach($playlists as $real_play)  
                     <div style="background-color: blue; width: 250px; text-align: center; padding: 15px; border: 3px solid white; margin: 10px;">
-                        <p>{{ $real_play["playlist_name"] }}</p>
-                        <a href="{{ route('playlist.details', $real_play['playlist_name']) }}">View playlist</a>
+                        <p>{{ $real_play["name"] }}</p>
+                        <a href="{{ route('playlist.details', $real_play['name']) }}">View playlist</a>
                     </div>
                     @endforeach
                 @else

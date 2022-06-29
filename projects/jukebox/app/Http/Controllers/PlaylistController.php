@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Playlist;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
@@ -19,26 +20,31 @@ class PlaylistController extends Controller
         $duration= "ok"; 
         //$songs = Song::whereIn('song_id', $songs)->get("song_duration");
     
-        $request->session()->put($name, [["name" => $name, "songs" => $songs, "duration" =>$duration]]);
+        $playlist= $request->session()->put($name, [["name" => $name, "songs" => $songs, "duration" =>$duration]]);
         return view("welcome", ["playlist" =>  $request->session()->get($name)]);
     }
 
     public function save_playlist(){
         $playlist= new Playlist(); 
-        $playlist->playlist_name= request("play_name");
+        $playlist->name= request("name");
         $playlist->songs= implode(" ", request("songs"));
-        $playlist->playlist_duration= request("play_duration");
+        $playlist->duration= request("duration");
         $playlist->save();
 
-        $playlists= Playlist::orderBy('playlist_id')->get();
+        $playlists= Playlist::orderBy('id')->get();
         return view("welcome", ["playlists" => $playlists]);
     }
 
     //playlist = [1:[name: test], 2:[name: hond]]
 
-    public function playlist_overview($id){
-        $playlist= Playlist::where('playlist_id', '=', $id)->get();
-        return view("playlist.playlist_overview", ["playlist" => $playlist]);
+    // public function playlist_overview($id){
+    //     $playlist= Playlist::where('playlist_id', '=', $id)->get();
+    //     return view("playlist.playlist_overview", ["playlist" => $playlist]);
+    // }
+
+    public function playlist_overview(){
+        $playlists= Playlist::orderBy('id')->get();
+        return view("welcome", ["playlists" => $playlists]);
     }
 
     public function playlist_details(Request $request, $name) {
@@ -87,4 +93,9 @@ class PlaylistController extends Controller
         return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }
 
+    public function logout(){
+        Session::flush();
+        Auth::logout();
+        return "logged out!";
+    }
 }
