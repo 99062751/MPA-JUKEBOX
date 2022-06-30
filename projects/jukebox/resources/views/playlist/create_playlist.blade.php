@@ -2,6 +2,7 @@
 <div>   
     @if (Auth::check())
     <form action="{{ route('playlist.save_playlist') }}">
+        <input type="hidden" name="type" value="database">
     @else
     <form action="{{ route('playlist.store_playlist') }}">
     @endif

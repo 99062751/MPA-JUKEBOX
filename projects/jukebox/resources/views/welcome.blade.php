@@ -53,7 +53,7 @@
                 <h1 style="color: white;">My playlists</h1>
                 <div style="display: inline-block; width: 800px;">
                     {{-- Als je NIET bent ingelogd --}}
-                @if(isset($playlist))                   
+                @if(isset($playlist) && !Auth::check())                   
                     <div style="background-color: blue; width: 250px; text-align: center; padding: 15px;">
                         <p>{{ $playlist["name"] }}</p>
                         <form action="{{ route('playlist.details', $playlist['name']) }}">
@@ -77,7 +77,19 @@
                         </form>
                     </div>
                     @endforeach
-                    <a href="{{route('playlist.store_playlist')}}">A</a>
+                    @if(isset($playlist))
+                        <div style="background-color: blue; width: 250px; text-align: center; padding: 15px; border: 3px solid white; margin: 10px;">
+                            <p>{{ $playlist["name"] }}</p>
+                            <form action="{{ route('playlist.details', $playlist['name']) }}">
+                                <input type="hidden" value="session" name="type">
+                                <input type="submit" value="View playlist3">
+                            </form>
+                            <form action="{{ route('playlist.save_playlist') }}">
+                                <input type="hidden" name="type" value="session">
+                                <input type="submit" value="Save playlist"><br>
+                            </form>
+                    
+                    @endif
                 @else
                     <h3>Playlist queue empty!</h3>
                 @endif
