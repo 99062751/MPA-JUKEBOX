@@ -52,11 +52,10 @@
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" >
                 <h1 style="color: white;">My playlists</h1>
                 <div style="display: inline-block; width: 800px;">  
-                @if(isset($playlist))                  
-                    @foreach($playlist as $play)  
+                @if(isset($playlist))                   
                     <div style="background-color: blue; width: 250px; text-align: center; padding: 15px;">
-                        <p>{{ $play["name"] }}</p>
-                        <form action="{{ route('playlist.details', $play['name']) }}">
+                        <p>{{ $playlist["name"] }}</p>
+                        <form action="{{ route('playlist.details', $playlist['name']) }}">
                             <input type="hidden" value="session" name="type">
                             <input type="submit" value="View playlist3">
                         </form>
@@ -65,7 +64,6 @@
                             <a href="{{ route('playlist.save_playlist') }}">Save playlist</a>
                         @endif
                     </div>
-                    @endforeach
                 @elseif(isset($playlists) && Auth::check())
                     @foreach($playlists as $real_play)  
                     <div style="background-color: blue; width: 250px; text-align: center; padding: 15px; border: 3px solid white; margin: 10px;">

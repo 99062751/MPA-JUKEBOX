@@ -49,8 +49,7 @@
     {{-- ALS HIJ NIET INGELOGD IS --}}
 
     @else
-    @foreach($playlist as $play)
-    <h1>Naam playlist: "{{$play["name"]}}"</h1>
+    <h1>Naam playlist: "{{$playlist["name"]}}"</h1>
     <h2>Songs:</h2>
     <div style="width: 1400px; display: inline-flex;">
         @foreach($songs as $index => $song)
@@ -62,7 +61,7 @@
             @else
                 <h3>Duur (min/sec): {{ date("h:i:s", strtotime($song->duration)) }}</h3>
             @endif
-            <form action="{{ route('retrieveSong.playlist', $play['name']) }}">
+            <form action="{{ route('retrieveSong.playlist', $playlist['name']) }}">
                 <input type="hidden" name="song_id" value="{{$index}}">
                 <input type="hidden" name="type" value="session">
                 <input type="submit" value="Delete Song">
@@ -71,20 +70,31 @@
         @endforeach
     </div>
 
-    <form action="{{ route('addSong.playlist', $play['name']) }}">
+    <form action="{{ route('addSong.playlist', $playlist['name']) }}">
         <label for="">Add more songs</label><br>
         <select name="songstoadd[]" id="" multiple size="2">
             @foreach ($select_songs as $select_song)
                 <option value="{{$select_song->id}}">{{$select_song->name}}</option>
             @endforeach
         </select><br>
+        <input type="hidden" value="session" name="type">
+        
         <input type="submit" value="Add">
     </form>
     
     <h2>
-        Duur (min/sec): {{$play["duration"]}}
+        Duur (min/sec): {{$playlist["duration"]}}
     </h2>
-    @endforeach
+
+    <h2>Wijzig naam</h2>
+    <form action="{{ route('playlist.details.save', $playlist['name']) }}">
+        <label for="play_name">Naam playlist:</label><br>
+        <input type="text" name="play_name" value="{{ $playlist['name'] }}"><br>
+        <input type="hidden" name="type" value="session"><br>
+        <input type="hidden" name="songs" value="{{ $playlist['songs'] }}">
+        <input type="submit" value="Save name">
+    </form>
+
     <!-- {{ var_dump($songs)}} -->
     @endif
 
