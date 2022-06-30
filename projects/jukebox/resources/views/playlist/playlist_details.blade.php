@@ -13,7 +13,7 @@
                 <h3>Duur (min/sec): {{ date("h:i:s", strtotime($song->duration)) }}</h3>
             @endif
             <form action="{{ route('retrieveSong.playlist', $playlist->id) }}">
-                <input type="hidden" name="song_id" value="{{$index}}">
+                <input type="hidden" name="song_id" value="{{$song->id}}">
                 <input type="hidden" name="type" value="database">
                 <input type="submit" value="Delete Song">
             </form>

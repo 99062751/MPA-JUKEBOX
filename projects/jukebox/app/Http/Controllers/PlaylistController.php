@@ -30,13 +30,14 @@ class PlaylistController extends Controller
         $playlist->name= request("play_name");
         $playlist_song= new Playlist_song();
         $playlist_song->song_id= 1;
-        $playlist_song->playlist_id= $playlist->id;
+        
 
         //dd(implode(" ", request("songs")));
         
         //$playlist->songs= implode(",", request("songs"));
         //$playlist->duration= request("duration");
         $playlist->save();
+        $playlist_song->playlist_id= $playlist->id;
         $playlist_song->save();
 
         $playlists= Playlist::orderBy('id')->get();
@@ -72,10 +73,11 @@ class PlaylistController extends Controller
             // foreach($returnme as $index){
             //     $songs[$index] = Song::find($index);
             // }
-            // $select_songs= Song::orderBy('id')->get();
-            // $playlist->duration= $this->getduration(collect($songs));
+            $songs= Playlist::find($id)->songs()->get();
+            $select_songs= Song::orderBy('id')->get();
+            $playlist->duration= $this->getduration(collect($songs));
             
-            // return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
         }else{
             return "oop werkt niet";
         }
@@ -96,23 +98,20 @@ class PlaylistController extends Controller
             $playlist[0]["duration"]= $this->getduration($songs);
             return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
         }elseif($type == "database"){
-            // $id= request("songstoadd");
-            // $playlist= Playlist::find($name);
-            // $string_id= ','. implode(" ", $id);
-            // $string_id= str_replace(" ", ',', $string_id);
-            // $playlist->songs= $playlist->songs. $string_id; 
-            
-            // $playlist->save();
-            
-            // $returnme= explode(",", $playlist->songs);
-            // $songs= [];
-            // foreach($returnme as $index){
-            //     $songs[$index] = Song::find($index);
-            // }
-            // $select_songs= Song::orderBy('id')->get();
-            // $playlist->duration= $this->getduration(collect($songs));
+            $id_array= request("songstoadd");
+            $playlist= Playlist::find($name);
+            foreach($id_array as $id){
+                $playlist_song= new Playlist_song();
+                $playlist_song->playlist_id= $name;
+                $playlist_song->song_id= $id;
+                $playlist_song->save();
+            }
 
-            //return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+            $songs= Playlist::find($name)->songs()->get();
+            $select_songs= Song::orderBy('id')->get();
+            $playlist->duration= $this->getduration(collect($songs));
+
+            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
         }else{
             return "werkt niet uwu";
         }
@@ -131,8 +130,16 @@ class PlaylistController extends Controller
             $playlist[0]["duration"]= $this->getduration($songs);
             return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
         }elseif($type == "database"){
-            // $id= request("song_id");
-            // $playlist= Playlist::find($name);
+            $id= request("song_id");
+            dd($id);
+            $playlist= Playlist::find($name);
+            $playlist_song= Playlist_song::where('song_id', '=', $id);
+            dd($playlist_song);
+            //$playlist_song->save();
+
+
+
+
             // if(!str_contains($playlist->songs, ",")){
             //     $returnme= str_replace(("$id"), "", $playlist->songs);
             // }else{

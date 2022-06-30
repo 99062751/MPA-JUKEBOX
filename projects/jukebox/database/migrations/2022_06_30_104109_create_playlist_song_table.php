@@ -13,7 +13,6 @@ return new class extends Migration
      */
     public function up()
     {
-        //
         Schema::create('playlist_song', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('playlist_id')->unsigned()->default(1);
@@ -21,6 +20,7 @@ return new class extends Migration
 
             $table->foreign('playlist_id')->references('id')->on("playlists");
             $table->foreign('song_id')->references('id')->on("songs");
+            $table->timestamps();
         });
     }
 
