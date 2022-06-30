@@ -131,33 +131,15 @@ class PlaylistController extends Controller
             return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
         }elseif($type == "database"){
             $id= request("song_id");
-            dd($id);
             $playlist= Playlist::find($name);
             $playlist_song= Playlist_song::where('song_id', '=', $id);
-            dd($playlist_song);
-            //$playlist_song->save();
-
-
-
-
-            // if(!str_contains($playlist->songs, ",")){
-            //     $returnme= str_replace(("$id"), "", $playlist->songs);
-            // }else{
-            //     $returnme= str_replace((",$id"), "", $playlist->songs);
-            // }
-            // $playlist->songs= $returnme;
             
-            // $playlist->save();  
+            $playlist_song->delete();
+            $songs= Playlist::find($name)->songs()->get();
+            $select_songs= Song::orderBy('id')->get();
+            $playlist->duration= $this->getduration(collect($songs));
             
-            // $returnme= explode(",", $returnme);
-            // $songs= [];
-            // foreach($returnme as $index){
-            //     $songs[$index] = Song::find($index);
-            // }
-            // $select_songs= Song::orderBy('id')->get();
-            // $playlist->duration= $this->getduration(collect($songs));
-            
-            //return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
         }else{
             return "werkt niet uwu";
         }
@@ -170,8 +152,6 @@ class PlaylistController extends Controller
             $value= Carbon::createFromFormat('H:i:s',  $value);
             $time= $time + $value->secondsSinceMidnight();
         }
-
-        //dd(gmdate("i:s", $time));
         
         return gmdate("i:s", $time);
     }
