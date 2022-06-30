@@ -1,3 +1,4 @@
+    {{-- ALS HIJ INGELOGD IS --}}
     @if (Auth::check())
     <h1>Naam playlist: "{{$playlist->name}}"</h1>
     <h2>Songs:</h2>
@@ -11,27 +12,33 @@
             @else
                 <h3>Duur (min/sec): {{ date("h:i:s", strtotime($song->duration)) }}</h3>
             @endif
-            <form action="{{ route('retrieveFromSession.playlist', $playlist->name) }}">
+            <form action="{{ route('retrieveSong.playlist', $playlist->id) }}">
                 <input type="hidden" name="song_id" value="{{$index}}">
+                <input type="hidden" name="type" value="database">
                 <input type="submit" value="Delete Song">
             </form>
         </div>
         @endforeach
     </div>
 
-    <form action="{{ route('addToSession.playlist', $playlist->name) }}">
+    <form action="{{ route('addSong.playlist', $playlist->id) }}">
         <label for="">Add more songs</label><br>
         <select name="songstoadd[]" id="" multiple size="2">
             @foreach ($select_songs as $select_song)
                 <option value="{{$select_song->id}}">{{$select_song->name}}</option>
             @endforeach
         </select><br>
+        <input type="hidden" value="database" name="type">
+        <input type="hidden" value="{{$song->id}}" name="song_id">
         <input type="submit" value="Add">
     </form>
 
     <h2>
         Duur (min/sec): {{$playlist->duration}}
     </h2>
+
+    {{-- ALS HIJ NIET INGELOGD IS --}}
+
     @else
     @foreach($playlist as $play)
     <h1>Naam playlist: "{{$play["name"]}}"</h1>
@@ -46,15 +53,16 @@
             @else
                 <h3>Duur (min/sec): {{ date("h:i:s", strtotime($song->duration)) }}</h3>
             @endif
-            <form action="{{ route('retrieveFromSession.playlist', $play['name']) }}">
+            <form action="{{ route('retrieveSong.playlist', $play['name']) }}">
                 <input type="hidden" name="song_id" value="{{$index}}">
+                <input type="hidden" name="type" value="session">
                 <input type="submit" value="Delete Song">
             </form>
         </div>
         @endforeach
     </div>
 
-    <form action="{{ route('addToSession.playlist', $play['name']) }}">
+    <form action="{{ route('addSong.playlist', $play['name']) }}">
         <label for="">Add more songs</label><br>
         <select name="songstoadd[]" id="" multiple size="2">
             @foreach ($select_songs as $select_song)

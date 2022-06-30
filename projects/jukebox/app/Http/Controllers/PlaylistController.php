@@ -76,6 +76,80 @@ class PlaylistController extends Controller
 
     }   
 
+    public function addSong(Request $request, $name){
+        $type= request("type");
+        if($type == "session"){
+            $to_add_songs= request("songstoadd");
+            foreach($to_add_songs as $song_id){
+                $request->session()->push($name .'.0.songs', $song_id);
+            }
+            $playlist= $request->session()->get($name);
+            $songs = Song::whereIn('id', $playlist[0]["songs"])->get();
+            $select_songs= Song::orderBy('id')->get();
+            dd($songs);
+            $playlist[0]["duration"]= $this->getduration($songs);
+            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+        }elseif($type == "database"){
+            $id= request("songstoadd");
+            $playlist= Playlist::find($name);
+            $string_id= ','. implode(" ", $id);
+            $string_id= str_replace(" ", ',', $string_id);
+            $playlist->songs= $playlist->songs. $string_id; 
+            
+            $playlist->save();
+            
+            $returnme= explode(",", $playlist->songs);
+            $songs= [];
+            foreach($returnme as $index){
+                $songs[$index] = Song::find($index);
+            }
+            $select_songs= Song::orderBy('id')->get();
+            $playlist->duration= $this->getduration(collect($songs));
+
+            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+        }else{
+            return "werkt niet uwu";
+        }
+            
+    }
+    
+    public function retrieveSong(Request $request, $name){
+        $type= request("type");
+        if($type == "session"){
+            $id= request("song_id");
+            $request->session()->pull($name .'.0.songs.'. $id);
+
+            $playlist= $request->session()->get($name);
+            $songs = Song::whereIn('id', $playlist[0]["songs"])->get();
+            $select_songs= Song::orderBy('id')->get();
+            $playlist[0]["duration"]= $this->getduration($songs);
+            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+        }elseif($type == "database"){
+            $id= request("song_id");
+            $playlist= Playlist::find($name);
+            if(!str_contains($playlist->songs, ",")){
+                $returnme= str_replace(("$id"), "", $playlist->songs);
+            }else{
+                $returnme= str_replace((",$id"), "", $playlist->songs);
+            }
+            $playlist->songs= $returnme;
+            
+            $playlist->save();  
+            
+            $returnme= explode(",", $returnme);
+            $songs= [];
+            foreach($returnme as $index){
+                $songs[$index] = Song::find($index);
+            }
+            $select_songs= Song::orderBy('id')->get();
+            $playlist->duration= $this->getduration(collect($songs));
+            
+            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+        }else{
+            return "werkt niet uwu";
+        }
+    }
+
     public function getduration($songs){
         $duration_arr= $songs->pluck('duration');
         $time= 0; 
@@ -88,30 +162,7 @@ class PlaylistController extends Controller
         
         return gmdate("i:s", $time);
     }
-
-    public function addToSession(Request $request, $name){
-        $to_add_songs= request("songstoadd");
-        foreach($to_add_songs as $song_id){
-            $request->session()->push($name .'.0.songs', $song_id);
-        }
-        $playlist= $request->session()->get($name);
-        $songs = Song::whereIn('id', $playlist[0]["songs"])->get();
-        $select_songs= Song::orderBy('id')->get();
-        $playlist[0]["duration"]= $this->getduration($songs);
-        return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
-    }
     
-    public function retrieveFromSession(Request $request, $name){
-        $id= request("song_id");
-        $request->session()->pull($name .'.0.songs.'. $id);
-
-        $playlist= $request->session()->get($name);
-        $songs = Song::whereIn('id', $playlist[0]["songs"])->get();
-        $select_songs= Song::orderBy('id')->get();
-        $playlist[0]["duration"]= $this->getduration($songs);
-        return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
-    }
-
     public function logout(){
         Session::flush();
         Auth::logout();

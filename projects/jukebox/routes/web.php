@@ -41,6 +41,6 @@ Route::get('/songs/add/{id}', [SongController::class, "songs_add"])->name("songs
 Route::get('/playlist/overview/{id}', [PlaylistController::class, "playlist_overview"])->name("playlist.overview");
 
 Route::get('/playlist/details/{name}', [PlaylistController::class, "playlist_details"])->name("playlist.details");
-Route::get('/playlist/songs/save/{id}', [PlaylistController::class, "addToSession"])->name("addToSession.playlist");
-Route::get('/playlist/songs/retrieve/{id}', [PlaylistController::class, "retrieveFromSession"])->name("retrieveFromSession.playlist");
+Route::get('/playlist/songs/save/{id}', [PlaylistController::class, "addSong"])->name("addSong.playlist");
+Route::get('/playlist/songs/retrieve/{id}', [PlaylistController::class, "retrieveSong"])->name("retrieveSong.playlist");
 
