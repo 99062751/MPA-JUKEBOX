@@ -17,14 +17,9 @@ use App\Models\Song;
 |
 */
 
-Route::get('/', function () {
-    // $playlist= Playlist::find(1)->songs()->get();
-    // return $playlist;
-    $playlists= Playlist::orderBy('id')->get();
-    return view("welcome", ["playlists" => $playlists]);
-});
+Route::get('/', [PlaylistController::class, "index"]);
 
-Route::get('/welcome', [PlaylistController::class, 'playlist_overview'])->middleware(['auth']);
+Route::get('/welcome', [PlaylistController::class, 'login_index'])->middleware(['auth']);
 
 Route::get('/dashboard', [PlaylistController::class, 'render_dashboard'])->middleware(['auth'])->name("dashboard");
 
@@ -32,10 +27,10 @@ Route::get('/dashboard', [PlaylistController::class, 'render_dashboard'])->middl
 require __DIR__.'/auth.php';
 
 Route::get('/logout', [PlaylistController::class, 'logout']);
-Route::get('genres/index_genres', [GenreController::class, "view_genres"])->name("genres.view_genres");
+Route::get('genres/index/', [GenreController::class, "view_genres"])->name("genres.view_genres");
 Route::get('playlist/create_playlist', [SongController::class, "get_songs"])->name("playlist.create_playlist");
-Route::get('welcome', [PlaylistController::class, "store_playlist"])->name("playlist.store_playlist");
-Route::get('save_playlist', [PlaylistController::class, "save_playlist"])->name("playlist.save_playlist");
+Route::get('playlist/store/', [PlaylistController::class, "store_playlist"])->name("playlist.store_playlist");
+Route::get('playlist/save', [PlaylistController::class, "save_playlist"])->name("playlist.save_playlist");
 
 Route::get('songs/{id}', [SongController::class, "songs_overview"])->name("songs.overview");
 Route::get('song/details/{id}', [SongController::class, "songs_details"])->name("songs.details");

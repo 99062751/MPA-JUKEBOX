@@ -51,7 +51,8 @@
             <h1>{{ session('msg') }}</h1>
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" >
                 <h1 style="color: white;">My playlists</h1>
-                <div style="display: inline-block; width: 800px;">  
+                <div style="display: inline-block; width: 800px;">
+                    {{-- Als je NIET bent ingelogd --}}
                 @if(isset($playlist))                   
                     <div style="background-color: blue; width: 250px; text-align: center; padding: 15px;">
                         <p>{{ $playlist["name"] }}</p>
@@ -64,6 +65,7 @@
                             <a href="{{ route('playlist.save_playlist') }}">Save playlist</a>
                         @endif
                     </div>
+                    {{-- Als je WEL bent ingelogd --}}
                 @elseif(isset($playlists) && Auth::check())
                     @foreach($playlists as $real_play)  
                     <div style="background-color: blue; width: 250px; text-align: center; padding: 15px; border: 3px solid white; margin: 10px;">
@@ -75,6 +77,7 @@
                         </form>
                     </div>
                     @endforeach
+                    <a href="{{route('playlist.store_playlist')}}">A</a>
                 @else
                     <h3>Playlist queue empty!</h3>
                 @endif

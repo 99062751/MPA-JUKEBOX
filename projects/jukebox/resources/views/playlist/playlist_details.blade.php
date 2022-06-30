@@ -86,15 +86,14 @@
         Duur (min/sec): {{$playlist["duration"]}}
     </h2>
 
-    <h2>Wijzig naam</h2>
+    {{-- <h2>Wijzig naam</h2>
     <form action="{{ route('playlist.details.save', $playlist['name']) }}">
         <label for="play_name">Naam playlist:</label><br>
         <input type="text" name="play_name" value="{{ $playlist['name'] }}"><br>
         <input type="hidden" name="type" value="session"><br>
-        <input type="hidden" name="songs" value="{{ $playlist['songs'] }}">
+        <input type="hidden" name="songs" value="{{ $songs }}">
         <input type="submit" value="Save name">
-    </form>
+    </form> --}}
 
-    <!-- {{ var_dump($songs)}} -->
     @endif
 
