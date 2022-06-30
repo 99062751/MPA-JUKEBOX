@@ -26,7 +26,7 @@ Route::get('/', function () {
 
 Route::get('/welcome', [PlaylistController::class, 'playlist_overview'])->middleware(['auth']);
 
-Route::get('/dashboard', [PlaylistController::class, 'playlist_overview'])->middleware(['auth'])->name("dashboard");
+Route::get('/dashboard', [PlaylistController::class, 'render_dashboard'])->middleware(['auth'])->name("dashboard");
 
 
 require __DIR__.'/auth.php';
@@ -45,4 +45,5 @@ Route::get('/playlist/overview/{id}', [PlaylistController::class, "playlist_over
 Route::get('/playlist/details/{name}', [PlaylistController::class, "playlist_details"])->name("playlist.details");
 Route::get('/playlist/songs/save/{id}', [PlaylistController::class, "addSong"])->name("addSong.playlist");
 Route::get('/playlist/songs/retrieve/{id}', [PlaylistController::class, "retrieveSong"])->name("retrieveSong.playlist");
+Route::get('/playlist/details/save/{name}', [PlaylistController::class, "playlist_savedetails"])->name("playlist.details.save");
 

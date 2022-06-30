@@ -66,17 +66,6 @@
                         @endif
                     </div>
                     @endforeach
-                @elseif(isset($data_playlist))
-                    @foreach($data_playlist as $dataplay)  
-                    <div style="background-color: blue; width: 250px; text-align: center; padding: 15px;">
-                        <p>{{ $dataplay["name"] }}</p>
-                        <form action="{{ route('playlist.details', $data_play['name']) }}">
-                            <input type="hidden" value="database" name="type">
-                            <input type="hidden" value="{{$dataplay['id']}}" name="id">
-                            <input type="submit" value="View playlist2">
-                        </form>
-                    </div>
-                    @endforeach
                 @elseif(isset($playlists) && Auth::check())
                     @foreach($playlists as $real_play)  
                     <div style="background-color: blue; width: 250px; text-align: center; padding: 15px; border: 3px solid white; margin: 10px;">

@@ -1,6 +1,6 @@
     {{-- ALS HIJ INGELOGD IS --}}
     @if (Auth::check())
-    <h1>Naam playlist: "{{$playlist->name}}"</h1>
+    <h1>"{{$playlist->name}}"</h1>
     <h2>Songs:</h2>
     <div style="width: 1400px; display: inline-flex;">
         @foreach($songs as $index => $song)
@@ -36,6 +36,15 @@
     <h2>
         Duur (min/sec): {{$playlist->duration}}
     </h2>
+
+    <h2>Wijzig naam</h2>
+    <form action="{{ route('playlist.details.save', $playlist->id) }}">
+        <label for="play_name">Naam playlist:</label><br>
+        <input type="text" name="play_name" value="{{ $playlist->name }}"><br>
+        <input type="hidden" name="type" value="database"><br>
+        <input type="submit" value="Save name">
+    </form>
+
 
     {{-- ALS HIJ NIET INGELOGD IS --}}
 

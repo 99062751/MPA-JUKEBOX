@@ -14,7 +14,6 @@ use App\Models\Song;
 
 class PlaylistController extends Controller
 {
-
     public function store_playlist(Request $request){
         $name= request("play_name");
         $songs= request("songs");
@@ -28,32 +27,21 @@ class PlaylistController extends Controller
     public function save_playlist(){
         $playlist= new Playlist(); 
         $playlist->name= request("play_name");
-        $playlist_song= new Playlist_song();
-        $playlist_song->song_id= 1;
-        
-
-        //dd(implode(" ", request("songs")));
-        
-        //$playlist->songs= implode(",", request("songs"));
-        //$playlist->duration= request("duration");
+        $id_array= request("songs");
         $playlist->save();
-        $playlist_song->playlist_id= $playlist->id;
-        $playlist_song->save();
+        foreach($id_array as $id){
+            $playlist_song= new Playlist_song();
+            $playlist_song->playlist_id= $playlist->id;
+            $playlist_song->song_id= $id;
+            $playlist_song->save();
+        }
 
         $playlists= Playlist::orderBy('id')->get();
         return view("welcome", ["playlists" => $playlists]);
     }
 
-    //playlist = [1:[name: test], 2:[name: hond]]
-
-    // public function playlist_overview($id){
-    //     $playlist= Playlist::where('playlist_id', '=', $id)->get();
-    //     return view("playlist.playlist_overview", ["playlist" => $playlist]);
-    // }
-
-    public function playlist_overview(){
-        $playlists= Playlist::orderBy('id')->get();
-        return view("welcome", ["playlists" => $playlists]);
+    public function render_dashboard(){
+        return view("dashboard");
     }
 
     public function playlist_details(Request $request, $name) {
@@ -68,11 +56,6 @@ class PlaylistController extends Controller
         }else if($type == "database"){
             $id= request("id");
             $playlist= Playlist::find($id);
-            // $returnme= explode(",", $playlist["songs"]);
-            // $songs= [];
-            // foreach($returnme as $index){
-            //     $songs[$index] = Song::find($index);
-            // }
             $songs= Playlist::find($id)->songs()->get();
             $select_songs= Song::orderBy('id')->get();
             $playlist->duration= $this->getduration(collect($songs));
@@ -143,6 +126,29 @@ class PlaylistController extends Controller
         }else{
             return "werkt niet uwu";
         }
+    }
+
+    public function playlist_savedetails($id){
+        $type= request("type");
+        if($type == "session"){
+
+
+
+        }elseif($type == "database"){
+            $name= request("play_name");
+            $playlist= Playlist::find($id);
+            $playlist->name= $name;
+            $playlist->save();
+    
+            $songs= Playlist::find($id)->songs()->get();
+            $select_songs= Song::orderBy('id')->get();
+            $playlist->duration= $this->getduration(collect($songs));
+            
+            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+        }else{
+            return "werkt niet uwu";
+        }
+
     }
 
     public function getduration($songs){
