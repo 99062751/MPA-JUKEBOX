@@ -20,6 +20,10 @@ class Playlist extends Model
         return $this->belongsToMany(Song::class);
     }
 
+    // public function playlist_songs(){
+    //     return $this->hasMany(Song::class);
+    // }
+
     public function users(){
         return $this->belongsTo(User::class);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Playlist;
+use App\Models\Playlist_song;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -27,11 +28,16 @@ class PlaylistController extends Controller
     public function save_playlist(){
         $playlist= new Playlist(); 
         $playlist->name= request("play_name");
+        $playlist_song= new Playlist_song();
+        $playlist_song->song_id= 1;
+        $playlist_song->playlist_id= $playlist->id;
+
         //dd(implode(" ", request("songs")));
         
-        $playlist->songs= implode(",", request("songs"));
+        //$playlist->songs= implode(",", request("songs"));
         //$playlist->duration= request("duration");
         $playlist->save();
+        $playlist_song->save();
 
         $playlists= Playlist::orderBy('id')->get();
         return view("welcome", ["playlists" => $playlists]);
@@ -61,15 +67,15 @@ class PlaylistController extends Controller
         }else if($type == "database"){
             $id= request("id");
             $playlist= Playlist::find($id);
-            $returnme= explode(",", $playlist["songs"]);
-            $songs= [];
-            foreach($returnme as $index){
-                $songs[$index] = Song::find($index);
-            }
-            $select_songs= Song::orderBy('id')->get();
-            $playlist->duration= $this->getduration(collect($songs));
+            // $returnme= explode(",", $playlist["songs"]);
+            // $songs= [];
+            // foreach($returnme as $index){
+            //     $songs[$index] = Song::find($index);
+            // }
+            // $select_songs= Song::orderBy('id')->get();
+            // $playlist->duration= $this->getduration(collect($songs));
             
-            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+            // return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
         }else{
             return "oop werkt niet";
         }
@@ -90,23 +96,23 @@ class PlaylistController extends Controller
             $playlist[0]["duration"]= $this->getduration($songs);
             return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
         }elseif($type == "database"){
-            $id= request("songstoadd");
-            $playlist= Playlist::find($name);
-            $string_id= ','. implode(" ", $id);
-            $string_id= str_replace(" ", ',', $string_id);
-            $playlist->songs= $playlist->songs. $string_id; 
+            // $id= request("songstoadd");
+            // $playlist= Playlist::find($name);
+            // $string_id= ','. implode(" ", $id);
+            // $string_id= str_replace(" ", ',', $string_id);
+            // $playlist->songs= $playlist->songs. $string_id; 
             
-            $playlist->save();
+            // $playlist->save();
             
-            $returnme= explode(",", $playlist->songs);
-            $songs= [];
-            foreach($returnme as $index){
-                $songs[$index] = Song::find($index);
-            }
-            $select_songs= Song::orderBy('id')->get();
-            $playlist->duration= $this->getduration(collect($songs));
+            // $returnme= explode(",", $playlist->songs);
+            // $songs= [];
+            // foreach($returnme as $index){
+            //     $songs[$index] = Song::find($index);
+            // }
+            // $select_songs= Song::orderBy('id')->get();
+            // $playlist->duration= $this->getduration(collect($songs));
 
-            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+            //return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
         }else{
             return "werkt niet uwu";
         }
@@ -125,26 +131,26 @@ class PlaylistController extends Controller
             $playlist[0]["duration"]= $this->getduration($songs);
             return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
         }elseif($type == "database"){
-            $id= request("song_id");
-            $playlist= Playlist::find($name);
-            if(!str_contains($playlist->songs, ",")){
-                $returnme= str_replace(("$id"), "", $playlist->songs);
-            }else{
-                $returnme= str_replace((",$id"), "", $playlist->songs);
-            }
-            $playlist->songs= $returnme;
+            // $id= request("song_id");
+            // $playlist= Playlist::find($name);
+            // if(!str_contains($playlist->songs, ",")){
+            //     $returnme= str_replace(("$id"), "", $playlist->songs);
+            // }else{
+            //     $returnme= str_replace((",$id"), "", $playlist->songs);
+            // }
+            // $playlist->songs= $returnme;
             
-            $playlist->save();  
+            // $playlist->save();  
             
-            $returnme= explode(",", $returnme);
-            $songs= [];
-            foreach($returnme as $index){
-                $songs[$index] = Song::find($index);
-            }
-            $select_songs= Song::orderBy('id')->get();
-            $playlist->duration= $this->getduration(collect($songs));
+            // $returnme= explode(",", $returnme);
+            // $songs= [];
+            // foreach($returnme as $index){
+            //     $songs[$index] = Song::find($index);
+            // }
+            // $select_songs= Song::orderBy('id')->get();
+            // $playlist->duration= $this->getduration(collect($songs));
             
-            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
+            //return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
         }else{
             return "werkt niet uwu";
         }

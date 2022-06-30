@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\SongController;
@@ -19,6 +18,8 @@ use App\Models\Song;
 */
 
 Route::get('/', function () {
+    // $playlist= Playlist::find(1)->songs()->get();
+    // return $playlist;
     $playlists= Playlist::orderBy('id')->get();
     return view("welcome", ["playlists" => $playlists]);
 });
@@ -26,6 +27,7 @@ Route::get('/', function () {
 Route::get('/welcome', [PlaylistController::class, 'playlist_overview'])->middleware(['auth']);
 
 Route::get('/dashboard', [PlaylistController::class, 'playlist_overview'])->middleware(['auth'])->name("dashboard");
+
 
 require __DIR__.'/auth.php';
 
