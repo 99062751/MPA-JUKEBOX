@@ -56,14 +56,10 @@
                 @if(isset($playlist) && !Auth::check())                   
                     <div style="background-color: blue; width: 250px; text-align: center; padding: 15px;">
                         <p>{{ $playlist["name"] }}</p>
-                        <form action="{{ route('playlist.details', $playlist['name']) }}">
+                        <form action="{{ route('session.details', $playlist['name']) }}">
                             <input type="hidden" value="session" name="type">
                             <input type="submit" value="View playlist3">
                         </form>
-                        
-                        @if (Auth::check())
-                            <a href="{{ route('playlist.save_playlist') }}">Save playlist</a>
-                        @endif
                     </div>
                     {{-- Als je WEL bent ingelogd --}}
                 @elseif(isset($playlists) && Auth::check())

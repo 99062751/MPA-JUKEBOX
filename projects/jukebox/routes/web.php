@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\PlaylistController;
+use App\Http\Controllers\SessionController;
 use App\Models\Playlist;
 use Illuminate\Http\Request;
 use App\Models\Song;
@@ -29,7 +30,7 @@ require __DIR__.'/auth.php';
 Route::get('/logout', [PlaylistController::class, 'logout']);
 Route::get('genres/index/', [GenreController::class, "view_genres"])->name("genres.view_genres");
 Route::get('playlist/create_playlist', [SongController::class, "get_songs"])->name("playlist.create_playlist");
-Route::get('playlist/store/', [PlaylistController::class, "store_playlist"])->name("playlist.store_playlist");
+Route::get('playlist/store/', [SessionController::class, "store_playlist"])->name("playlist.store_playlist");
 Route::get('playlist/save', [PlaylistController::class, "save_playlist"])->name("playlist.save_playlist");
 
 Route::get('songs/{id}', [SongController::class, "songs_overview"])->name("songs.overview");
@@ -42,3 +43,4 @@ Route::get('/playlist/songs/save/{id}', [PlaylistController::class, "addSong"])-
 Route::get('/playlist/songs/retrieve/{id}', [PlaylistController::class, "retrieveSong"])->name("retrieveSong.playlist");
 Route::get('/playlist/details/save/{name}', [PlaylistController::class, "playlist_savedetails"])->name("playlist.details.save");
 
+Route::get('/playlist/details/session/{name}', [SessionController::class, "session_details"])->name("session.details");
