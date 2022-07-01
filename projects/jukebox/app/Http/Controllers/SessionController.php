@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Song;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Carbon\CarbonInterval;
 
 class SessionController extends Controller
     {
@@ -45,45 +47,35 @@ class SessionController extends Controller
         $playlist= $request->session()->get("session_playlist");
         $songs = Song::whereIn('id', $playlist["songs"])->get();
         $select_songs= Song::orderBy('id')->get();
-        $playlist["duration"]= $this->getduration_session($songs);
+        $playlist["duration"]= $this->getduration_session(collect($songs));
 
         return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }
 
     // add song to session
     public function add_songsession(Request $request){
-        if($type == "session"){
-            $to_add_songs= request("songstoadd");
-            foreach($to_add_songs as $song_id){
-                $request->session()->push("session_playlist" .'.songs', $song_id);
-            }
-            $playlist= $request->session()->get("session_playlist");
-            $songs = Song::whereIn('id', $playlist["songs"])->get();
-            $select_songs= Song::orderBy('id')->get();
-            $playlist["duration"]= $this->getduration_session($songs);
-            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
-        }else{
-            return "werkt niet uwu";
+        $to_add_songs= request("songstoadd");
+        foreach($to_add_songs as $song_id){
+            $request->session()->push("session_playlist" .'.songs', $song_id);
         }
+        $playlist= $request->session()->get("session_playlist");
+        $songs = Song::whereIn('id', $playlist["songs"])->get();
+        $select_songs= Song::orderBy('id')->get();
+        $playlist["duration"]= $this->getduration_session($songs);
+        return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }
     // retrieve song session
     function retrieve_songsession(Request $request){
-        if($type == "session"){
-            $id= request("song_id");
-            $request->session()->pull("session_playlist" .'.songs.'. $id);
-
-            $playlist= $request->session()->get("session_playlist");
-            $songs = Song::whereIn('id', $playlist["songs"])->get();
-            $select_songs= Song::orderBy('id')->get();
-            dd($songs);
-            $playlist["duration"]= $this->getduration_session($songs);
-            return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
-        }else{
-            return "werkt niet uwu";
-        }
+        $id= request("song_id");
+        $request->session()->pull("session_playlist" .'.songs.'. $id);
+        $playlist= $request->session()->get("session_playlist");
+        $songs = Song::whereIn('id', $playlist["songs"])->get();
+        $select_songs= Song::orderBy('id')->get();
+        $playlist["duration"]= $this->getduration_session(collect($songs));
+        return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }
 
-    public function getduration_session(Request $request, $dd){
+    public function getduration_session($songs){
         $duration_arr= $songs->pluck('duration');
         $time= 0; 
         foreach($duration_arr as $value){
