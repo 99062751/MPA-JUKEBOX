@@ -7,10 +7,10 @@
         <div style="background-color: grey; width: 300px; color: white; padding: 12px; margin: 13px;">
             <h3>Naam: {{ $song->name }}</h3>
             <h3>Artiest: {{ $song->artist }}</h5>
-            @if(date("i", strtotime($song->duration)) <= 60)
-                <h3>Duur (min/sec): {{ date("i:s", strtotime($song->duration)) }}</h3>
+            @if($song->duration <= 60)
+                <h3>Duur (min/sec): {{ date("H:i:s", strtotime($song->duration)) }}</h3>
             @else
-                <h3>Duur (min/sec): {{ date("h:i:s", strtotime($song->duration)) }}</h3>
+                <h3>Duur (min/sec): {{ date("i:s", strtotime($song->duration)) }}</h3>
             @endif
             <form action="{{ route('retrieveSong.playlist', $playlist->id) }}">
                 <input type="hidden" name="song_id" value="{{$song->id}}">
@@ -56,10 +56,10 @@
         <div style="background-color: grey; width: 300px; color: white; padding: 12px; margin: 13px;">
             <h3>Naam: {{ $song->name }}</h3>
             <h3>Artiest: {{ $song->artist }}</h5>
-            @if(date("i", strtotime($song->duration)) <= 60)
-                <h3>Duur (min/sec): {{ date("i:s", strtotime($song->duration)) }}</h3>
+            @if(strtotime($song->duration) <= 60)
+                <h3>Duur (min/sec): {{ date("H:i:s", strtotime($song->duration)) }}</h3>
             @else
-                <h3>Duur (min/sec): {{ date("h:i:s", strtotime($song->duration)) }}</h3>
+                <h3>Duur (min/sec): {{ date("i:s", strtotime($song->duration)) }}</h3>
             @endif
             <form action="{{ route('retrieveSong.playlist', $playlist['name']) }}">
                 <input type="hidden" name="song_id" value="{{$index}}">

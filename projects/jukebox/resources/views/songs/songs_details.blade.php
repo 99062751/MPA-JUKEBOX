@@ -10,7 +10,5 @@
 
             <h4>Duration</h4>
             <p>{{ date("H:i:s", strtotime($song->duration)) }}</p>
-
-            <a href="{{ route('songs.add', $song->id) }}">Add to playlist</a>
     </div>
 

@@ -98,7 +98,7 @@ class PlaylistController extends Controller
         if($type == "session"){
             $to_add_songs= request("songstoadd");
             foreach($to_add_songs as $song_id){
-                $request->session()->push($name .'.songs', $song_id);
+                $request->session()->push("session_playlist" .'.songs', $song_id);
             }
             $playlist= $request->session()->get("session_playlist");
             $songs = Song::whereIn('id', $playlist["songs"])->get();
@@ -130,7 +130,7 @@ class PlaylistController extends Controller
         $type= request("type");
         if($type == "session"){
             $id= request("song_id");
-            $request->session()->pull($name .'.songs.'. $id);
+            $request->session()->pull("session_playlist" .'.songs.'. $id);
 
             $playlist= $request->session()->get("session_playlist");
             $songs = Song::whereIn('id', $playlist["songs"])->get();
@@ -179,8 +179,7 @@ class PlaylistController extends Controller
             $value= Carbon::createFromFormat('H:i:s',  $value);
             $time= $time + $value->secondsSinceMidnight();
         }
-        
-        return gmdate("i:s", $time);
+        return gmdate("H:i:s", $time);
     }
     
     public function logout(){
