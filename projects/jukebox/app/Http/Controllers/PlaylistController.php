@@ -14,7 +14,6 @@ use App\Models\Song;
 
 class PlaylistController extends Controller
 {
-            $playlist= new Playlist();
     
     public function save_playlist(){
         $playlist= new Playlist(); 
