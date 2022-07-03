@@ -58,7 +58,7 @@
                         <p>{{ $playlist["name"] }}</p>
                         <form action="{{ route('session.details', $playlist['name']) }}">
                             <input type="hidden" value="session" name="type">
-                            <input type="submit" value="View playlist3">
+                            <input type="submit" value="View playlist">
                         </form>
                     </div>
                     {{-- Als je WEL bent ingelogd --}}
@@ -73,12 +73,13 @@
                         </form>
                     </div>
                     @endforeach
+                    {{-- als een session bestaat --}}
                     @if(isset($playlist))
                         <div style="background-color: blue; width: 250px; text-align: center; padding: 15px; border: 3px solid white; margin: 10px;">
                             <p>{{ $playlist["name"] }}</p>
                             <form action="{{ route('playlist.details', $playlist['name']) }}">
                                 <input type="hidden" value="session" name="type">
-                                <input type="submit" value="View playlist3">
+                                <input type="submit" value="View playlist">
                             </form>
                             <form action="{{ route('playlist.session.save') }}">
                                 <input type="submit" value="Save playlist"><br>

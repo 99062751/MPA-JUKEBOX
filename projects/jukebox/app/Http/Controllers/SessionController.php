@@ -10,7 +10,7 @@ use Carbon\CarbonInterval;
 
 class SessionController extends Controller
     {
-    // store_playlist session
+    // slaat de playlist in een session op
     public function store_playlist(Request $request){
         $name= request("play_name");
         $songs= request("songs");
@@ -21,30 +21,7 @@ class SessionController extends Controller
         return view("welcome", ["playlist" =>  $playlist]);
     }
 
-
-    // save_playlist session
-    public function save_session(Request $request){
-        if($type == "session"){
-            $session= $request->session()->get("session_playlist");
-            $playlist= new Playlist();
-            $playlist->name= $session["name"];
-            $id_array= $session["songs"];
-            $playlist->save();
-            foreach($id_array as $id){
-                $playlist_song= new Playlist_song();
-                $playlist_song->playlist_id= $playlist->id;
-                $playlist_song->song_id= $id;
-                $playlist_song->save();
-            }
-
-            $playlists= Playlist::orderBy('id')->get();
-            return view("welcome", ["playlists" => $playlists]);
-        }else{
-            return "werkt niet uwu";
-        }
-    }
-
-    //details session
+    //details page session 
     public function session_details(Request $request){
         $playlist= $request->session()->get("session_playlist");
         $songs = Song::whereIn('id', $playlist["songs"])->get();
@@ -54,7 +31,7 @@ class SessionController extends Controller
         return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }
 
-    // add song to session
+    // voegt een song toe bij session
     public function add_songsession(Request $request){
         $to_add_songs= request("songstoadd");
         foreach($to_add_songs as $song_id){
@@ -66,7 +43,7 @@ class SessionController extends Controller
         $playlist["duration"]= $this->getduration_session($songs);
         return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }
-    // retrieve song session
+    // verwijderd een song van session
     function retrieve_songsession(Request $request){
         $id= request("song_id");
         $request->session()->pull("session_playlist" .'.songs.'. $id);
@@ -77,6 +54,7 @@ class SessionController extends Controller
         return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }
 
+    // berekend en geeft de duration terug van playlist session
     public function getduration_session($songs){
         $duration_arr= $songs->pluck('duration');
         $time= 0; 
@@ -87,6 +65,7 @@ class SessionController extends Controller
         return gmdate("H:i:s", $time);
     }
 
+    //slaat de session op in playlist database
     public function save_playlistsession(Request $request){
         $session= $request->session()->get("session_playlist");
         $playlist= new Playlist(); 

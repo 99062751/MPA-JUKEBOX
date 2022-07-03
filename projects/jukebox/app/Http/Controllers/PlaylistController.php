@@ -14,16 +14,18 @@ use App\Models\Song;
 
 class PlaylistController extends Controller
 {
-    
+    //laad het dashboard in als je ingelogd ben
     public function render_dashboard(){
         return view("dashboard");
     }
-
+    
+    //laad de index in als je ingelogd ben
     public function login_index(){
         $playlists= Playlist::orderBy('id')->get();
         return view("welcome", ["playlists" => $playlists]);
     }
 
+    //details page playlist 
     public function playlist_details($name) {
         $id= request("id");
         $playlist= Playlist::find($id);
@@ -34,6 +36,7 @@ class PlaylistController extends Controller
         return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }   
 
+    // voegt een song toe bij playlist
     public function addSong($name){
         $id_array= request("songstoadd");
         $playlist= Playlist::find($name);
@@ -51,6 +54,7 @@ class PlaylistController extends Controller
         return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }
     
+    // verwijderd een song van playlist
     public function retrieveSong($name){
         $id= request("song_id");
         $playlist= Playlist::find($name);
@@ -64,6 +68,7 @@ class PlaylistController extends Controller
         return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }
 
+    //slaat de nieuwe naam op in playlist 
     public function playlist_savedetails($id){
         $name= request("play_name");
         $playlist= Playlist::find($id);
@@ -77,6 +82,8 @@ class PlaylistController extends Controller
         return view("playlist.playlist_details", ["playlist" => $playlist, "songs" => $songs, "select_songs" => $select_songs]);
     }
 
+
+    // berekend en geeft de duration terug van playlist
     public function getduration($songs){
         $duration_arr= $songs->pluck('duration');
         $time= 0; 
@@ -87,12 +94,13 @@ class PlaylistController extends Controller
         return gmdate("H:i:s", $time);
     }
     
+    //logt de gebruiker uit en laad nieuwe pagina in
     public function logout(){
         Session::flush();
         Auth::logout();
         return "logged out!";
     }
-
+    //laad de index in als je niet ingelogd ben
     public function index(Request $request){
         $playlist= $request->session()->get("session_playlist");
         $playlists= Playlist::orderBy('id')->get();
