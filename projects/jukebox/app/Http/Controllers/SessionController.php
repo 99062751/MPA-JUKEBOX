@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\Song;
+use App\Models\Playlist;
+use App\Models\Playlist_song;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Carbon\CarbonInterval;
@@ -83,5 +85,22 @@ class SessionController extends Controller
             $time= $time + $value->secondsSinceMidnight();
         }
         return gmdate("H:i:s", $time);
+    }
+
+    public function save_playlistsession(Request $request){
+        $session= $request->session()->get("session_playlist");
+        $playlist= new Playlist(); 
+        $playlist->name= $session["name"];
+        $id_array= $session["songs"];
+        $playlist->save();
+        foreach($id_array as $id){
+            $playlist_song= new Playlist_song();
+            $playlist_song->playlist_id= $playlist->id;
+            $playlist_song->song_id= $id;
+            $playlist_song->save();
+        }
+
+        $playlists= Playlist::orderBy('id')->get();
+        return view("welcome", ["playlists" => $playlists]);
     }
 }

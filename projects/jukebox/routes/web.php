@@ -31,7 +31,7 @@ Route::get('/logout', [PlaylistController::class, 'logout']);
 Route::get('genres/index/', [GenreController::class, "view_genres"])->name("genres.view_genres");
 Route::get('playlist/create_playlist', [SongController::class, "get_songs"])->name("playlist.create_playlist");
 Route::get('playlist/store/', [SessionController::class, "store_playlist"])->name("playlist.store_playlist");
-Route::get('playlist/save', [PlaylistController::class, "save_playlist"])->name("playlist.save_playlist");
+Route::get('playlist/save', [SessionController::class, "save_playlistsession"])->name("playlist.session.save");
 
 Route::get('songs/{id}', [SongController::class, "songs_overview"])->name("songs.overview");
 Route::get('song/details/{id}', [SongController::class, "songs_details"])->name("songs.details");

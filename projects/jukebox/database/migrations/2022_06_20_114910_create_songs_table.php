@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('artist');
             $table->bigInteger('genre_id')->unsigned();
-            //$table->string('song_type', 255);
             $table->time('duration')->useCurrent();
             $table->timestamps();
 

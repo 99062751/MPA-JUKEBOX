@@ -15,22 +15,6 @@ use App\Models\Song;
 class PlaylistController extends Controller
 {
     
-    public function save_playlist(){
-        $playlist= new Playlist(); 
-        $playlist->name= request("play_name");
-        $id_array= request("songs");
-        $playlist->save();
-        foreach($id_array as $id){
-            $playlist_song= new Playlist_song();
-            $playlist_song->playlist_id= $playlist->id;
-            $playlist_song->song_id= $id;
-            $playlist_song->save();
-        }
-
-        $playlists= Playlist::orderBy('id')->get();
-        return view("welcome", ["playlists" => $playlists]);
-    }
-
     public function render_dashboard(){
         return view("dashboard");
     }

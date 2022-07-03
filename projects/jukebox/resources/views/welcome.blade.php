@@ -80,8 +80,7 @@
                                 <input type="hidden" value="session" name="type">
                                 <input type="submit" value="View playlist3">
                             </form>
-                            <form action="{{ route('playlist.save_playlist') }}">
-                                <input type="hidden" name="type" value="session">
+                            <form action="{{ route('playlist.session.save') }}">
                                 <input type="submit" value="Save playlist"><br>
                             </form>
                     
