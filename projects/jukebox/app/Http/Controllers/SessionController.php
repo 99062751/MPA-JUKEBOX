@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Carbon\CarbonInterval;
 
-class SessionController extends Controller
+class SessionController
     {
     // slaat de playlist in een session op
     public function store_playlist(Request $request){
